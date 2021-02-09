@@ -1,5 +1,5 @@
 # ProjectUniversitySQL
-SQL Server project with **triggers**, **procedures** and **own database project**. Project University simulates database for real university where students belong to different groups, have timetables with courses that they enrolled in and classrooms where the lessons take place. Also each subject has assinged main teacher.
+SQL Server project with **triggers**, stored **procedures** and **functions** and **own database project**. Project University simulates database for real university where students belong to different groups, have timetables with courses that they enrolled in and classrooms where the lessons take place. Also each subject has assinged main teacher.
 
 **What can you find here:**
 1) In **UNIVERSITY_SCHEMA.sql** you can find my own database schema including 13 tables with **relations one-to-many and many-to-many**.
