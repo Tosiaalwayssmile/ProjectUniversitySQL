@@ -1,7 +1,7 @@
 USE UNIVERSITY;
 /***************************************** FUNCTION 1 ********************************************/
 -- Function returning percentage of all students in each group.
--- Funkcja podaj¹ca dla ka¿dej grupy, ile procent wszystkich studentów znajduje siê w tej grupie.
+-- Funkcja podajaca dla kazdej grupy, ile procent wszystkich studentów znajduje sie w tej grupie.
 
 IF OBJECT_ID ('PercentageOfStudentsInGroup') IS NOT NULL  
 DROP FUNCTION PercentageOfStudentsInGroup;
