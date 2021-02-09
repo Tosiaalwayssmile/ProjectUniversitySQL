@@ -1,156 +1,153 @@
-if exists(select 1 from master.dbo.sysdatabases where name = 'UNIVERSITY') drop database UNIVERSITY
+/*	Different way of checking if database exists and creating it 
+IF NOT EXISTS(
+	SELECT * FROM master.dbo.sysdatabases 
+	WHERE NAME = 'UNIVERSITY'
+	)
+CREATE DATABASE UNIVERSITY
 GO
+*/
+IF EXISTS(
+	SELECT 1 FROM master.dbo.sysdatabases 
+	WHERE NAME = 'UNIVERSITY'
+	) 
+DROP DATABASE UNIVERSITY
+GO
+
 CREATE DATABASE UNIVERSITY
 GO
 
-CREATE TABLE UNIVERSITY..teachers
-    ( teacher_id    INT NOT NULL
-	, CONSTRAINT     teacher_id_uk UNIQUE (teacher_id)
-    , first_name     VARCHAR(20)
-    , last_name      VARCHAR(25)
-	 CONSTRAINT     teacher_last_name_nn  NOT NULL
-    , email          VARCHAR(25)
-	  CONSTRAINT     teacher_email_nn  NOT NULL
-    , phone_number   VARCHAR(20)
-    , hire_date      DATETIME
-    , salary         MONEY
-    , CONSTRAINT     teacher_salary_min CHECK (salary > 0) 
-    , CONSTRAINT     teacher_email_uk UNIQUE (email)
-	
-	,CONSTRAINT PKTeacher_id PRIMARY KEY (teacher_id)
-    ) ;
+CREATE TABLE UNIVERSITY..Teachers( 
+	TeacherId		INT 
+	CONSTRAINT PK_TeacherId PRIMARY KEY (TeacherId),
+    FirstName		VARCHAR(20),
+    LastName		VARCHAR(25) NOT NULL,
+    Email          VARCHAR(25)
+	CONSTRAINT     NN_TeacherEmail  NOT NULL,
+    Phone_number   VARCHAR(20),
+    HireDate      DATE,
+    Salary         MONEY
+    CONSTRAINT     CHK_TeacherSalaryMin CHECK (Salary > 500), 
+    CONSTRAINT     CHK_TeacherEmailUnique UNIQUE (Email)
+);
 GO
 
-
-CREATE TABLE UNIVERSITY..students
-    ( student_id    INT NOT NULL
-	, CONSTRAINT     student_id_uk UNIQUE (student_id)
-    , first_name     VARCHAR(20)
-    , last_name      VARCHAR(25)
-	  CONSTRAINT     student_last_name_nn  NOT NULL
-    , phone_number   VARCHAR(20)
-    , birth_date      DATETIME
-	  CONSTRAINT     student_birth_date_nn  NOT NULL
-	, CONSTRAINT student_id_pk PRIMARY KEY (student_id)
-	, group_id    INT
-	) ;
+CREATE TABLE UNIVERSITY..Students(
+	StudentId    INT
+	CONSTRAINT PK_StudentId PRIMARY KEY (StudentId),
+    FirstName     VARCHAR(20),
+    LastName      VARCHAR(25) NOT NULL,
+    Phone_number   VARCHAR(20),
+    BirthDate      DATE NOT NULL,
+	GroupId    INT
+);
 GO
 
-CREATE TABLE UNIVERSITY..subjects
-    ( subject_id    INT NOT NULL
-	, CONSTRAINT     subject_id_uk UNIQUE (subject_id)
-    , subject_name  VARCHAR(30)
-	, main_teacher_id       INT	
-	  CONSTRAINT  subject_name_nn  NOT NULL
-	, CONSTRAINT PKSubject PRIMARY KEY (subject_id) 
-	, CONSTRAINT main_teacher_id_fk FOREIGN KEY (main_teacher_id) REFERENCES teachers (teacher_id)
-    ) ;
+CREATE TABLE UNIVERSITY..Subjects(
+	SubjectId    INT
+	CONSTRAINT PK_SubjectId PRIMARY KEY (SubjectId), 
+    SubjectName  VARCHAR(30) NOT NULL,
+	MainTeacherId       INT	
+	CONSTRAINT FK_Subjects_MainTeacherId FOREIGN KEY (MainTeacherId) REFERENCES Teachers (TeacherId)
+);
 GO
 
-CREATE TABLE UNIVERSITY..buildings
-    ( building_id   INT NOT NULL
-    , building_name   VARCHAR(20) NOT NULL
-	, CONSTRAINT building_id_pk PRIMARY KEY (building_id )
-
-    ) ;
+CREATE TABLE UNIVERSITY..Buildings(
+	BuildingId   INT NOT NULL,
+    BuildingName   VARCHAR(20) NOT NULL
+	CONSTRAINT PK_BuildingId PRIMARY KEY (BuildingId)
+);
 GO
 
-CREATE TABLE UNIVERSITY..classrooms
-    ( classroom_id    INT NOT NULL
-    , classroom_name  VARCHAR(20) NOT NULL
-	, building_id   INT NOT NULL
-	, CONSTRAINT classroom_id_pk PRIMARY KEY (classroom_id )
-	, CONSTRAINT FKClassroomBuildings FOREIGN KEY (building_id ) REFERENCES buildings(building_id )
-    ) ;
+CREATE TABLE UNIVERSITY..Classrooms(
+	ClassroomId    INT NOT NULL
+	CONSTRAINT PK_ClassroomId PRIMARY KEY (ClassroomId),
+    ClassroomName  VARCHAR(20) NOT NULL,
+	BuildingId   INT NOT NULL
+	CONSTRAINT FK_Classrooms_BuildingId FOREIGN KEY (BuildingId) REFERENCES Buildings(BuildingId)
+);
 GO
 
-CREATE TABLE UNIVERSITY..timetables
-    ( subject_id    INT NOT NULL
-    , student_id  INT NOT NULL
-	, teacher_id  INT NOT NULL
-	, classroom_id    INT NOT NULL
-	,CONSTRAINT FKStudentTimeTable FOREIGN KEY (student_id) REFERENCES students(student_id)
-	,CONSTRAINT FKSubjectTimeTable FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
-	,CONSTRAINT FKTeacher FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id)
-	,CONSTRAINT FKTimeTableClassroom FOREIGN KEY (classroom_id) REFERENCES classrooms(classroom_id)
-    ) ;
+CREATE TABLE UNIVERSITY..Timetables(
+    SubjectId    INT NOT NULL,
+    StudentId  INT NOT NULL,
+	TeacherId  INT NOT NULL,
+	ClassroomId    INT NOT NULL,
+	CONSTRAINT FK_Timetables_StudentId FOREIGN KEY (StudentId) REFERENCES Students(StudentId),
+	CONSTRAINT FK_Timetables_SubjectId FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId),
+	CONSTRAINT FK_Timetables_TeacherId FOREIGN KEY (TeacherId) REFERENCES Teachers(TeacherId),
+	CONSTRAINT FK_Timetables_ClassroomId FOREIGN KEY (ClassroomId) REFERENCES Classrooms(ClassroomId)
+);
 GO
 
-GO
-CREATE TABLE UNIVERSITY..groups
-    ( group_id    INT NOT NULL
-	, min_nr    INT NOT NULL
-	, max_nr    INT NOT NULL
-	, CONSTRAINT    group_id_uk UNIQUE (group_id)
-    ) ;
+CREATE TABLE UNIVERSITY..Groups(
+	GroupId    INT NOT NULL UNIQUE,
+	MinNrOfStudents   INT NOT NULL,
+	MaxNrOfStudents   INT NOT NULL
+);
 GO
 
-
-ALTER TABLE UNIVERSITY..students ADD CONSTRAINT FKStudentGroup FOREIGN KEY (group_id) REFERENCES groups (group_id);
+ALTER TABLE UNIVERSITY..Students ADD CONSTRAINT FK_Students_StudentGroup FOREIGN KEY (GroupId) REFERENCES Groups (GroupId);
 GO
 
-CREATE TABLE UNIVERSITY..field_of_study
-    ( field_of_study_id     INT NOT NULL 
-	, field_of_study_name  VARCHAR(30)
-	, CONSTRAINT field_of_study_id_pk PRIMARY KEY (field_of_study_id )
-
-    ) ;
+CREATE TABLE UNIVERSITY..FieldOfStudy(
+	FieldOfStudyId     INT 
+	CONSTRAINT PK_FieldOfStudyId PRIMARY KEY (FieldOfStudyId),
+	FieldOfStudyName  VARCHAR(30) NOT NULL
+);
 GO
 
-CREATE TABLE UNIVERSITY..academic_year
-    ( academic_year_id INT
-	, academic_year_name   Datetime NOT NULL
-	, constraint PKAcademicYear PRIMARY key (academic_year_id)
-	) ;
+CREATE TABLE UNIVERSITY..AcademicYear(
+	AcademicYearId	INT
+	CONSTRAINT PK_AcademicYearId PRIMARY KEY (AcademicYearId),
+	AcademicYearName	Date NOT NULL
+);
 GO
-CREATE TABLE UNIVERSITY..group_types
-    ( group_id    INT NOT NULL 
-	, group_name  VARCHAR(30)
-	  CONSTRAINT  group_name_nn  NOT NULL
-	, group_type   VARCHAR(30) 	
-	, academic_year INT NOT NULL
-	, field_of_study_id INT NOT NULL
-	, CONSTRAINT FKGroupTypeGroup FOREIGN KEY (group_id) REFERENCES groups (group_id)
-	, CONSTRAINT TYPE_check_ CHECK(group_type IN('FULL TIME','PART TIME'))
-	, CONSTRAINT FKGroupTypesAcademicYear foreign key (academic_year) references academic_year(academic_year_id)
-    ) ;
+
+CREATE TABLE UNIVERSITY..GroupTypes(
+	GroupId    INT NOT NULL, 
+	GroupName  VARCHAR(30)  NOT NULL,
+	GroupType   VARCHAR(30)	NOT NULL,	
+	AcademicYearId INT NOT NULL,
+	FieldOfStudyId INT NOT NULL,
+	CONSTRAINT FK_GroupTypes_AcademicYearId FOREIGN KEY (AcademicYearId) REFERENCES AcademicYear(AcademicYearId),
+	CONSTRAINT FK_GroupTypes_FieldOfStudyId FOREIGN KEY (FieldOfStudyId ) REFERENCES FieldOfStudy(FieldOfStudyId), 
+	CONSTRAINT FK_GroupTypes_GroupId FOREIGN KEY (GroupId) REFERENCES Groups (GroupId),
+	CONSTRAINT CHK_GroupTypeIn CHECK(GroupType IN('FULL TIME', 'PART TIME'))
+);
 GO
-ALTER TABLE UNIVERSITY..group_types ADD CONSTRAINT FKGroupTypesFieldOfStudy FOREIGN KEY (field_of_study_id ) REFERENCES field_of_study(field_of_study_id );
 
-
-CREATE TABLE UNIVERSITY..grades (
-	grade_id int NOT NULL IDENTITY(1,1),
-	grade_name  int NOT NULL,
-	grade_date DATETIME,
-    subject_id  int NOT NULL,
-	student_id  int NOT NULL,
-	note VARCHAR(30) NOT NULL,
-	constraint PKGrade PRIMARY key (grade_id),
-	constraint FKSubjectG foreign key (subject_id) references subjects(subject_id),
-	constraint FKStudentG foreign key (student_id) references students(student_id),
-	CONSTRAINT grade_check_name CHECK(grade_name IN ('1', '2', '3', '4','5','6'))
+CREATE TABLE UNIVERSITY..Grades (
+	GradeId int NOT NULL IDENTITY(1,1)
+	CONSTRAINT PK_GradeId PRIMARY key (GradeId),
+	GradeName  INT NOT NULL,
+	GradeDate DATETIME,
+    SubjectId  INT NOT NULL,
+	StudentId  INT NOT NULL,
+	Note VARCHAR(30) NOT NULL,
+	CONSTRAINT FK_Grades_SubjectId FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId),
+	CONSTRAINT FK_Grades_StudentId FOREIGN KEY (StudentId) REFERENCES Students(StudentId),
+	CONSTRAINT CHK_GradeNameIn CHECK(GradeName IN ('1', '2', '3', '4','5','6'))
 );
 
 GO
 
-CREATE TABLE UNIVERSITY..albums
-    ( album_id INT
-	, student_id   INT 
-	, constraint PKAlbum PRIMARY key (album_id)
-	,constraint FKAlbumsStudent foreign key (student_id) references students(student_id)
-	) ;
+CREATE TABLE UNIVERSITY..Albums( 
+	AlbumId INT
+	CONSTRAINT PK_AlbumId PRIMARY KEY (AlbumId),
+	StudentId	INT 
+	CONSTRAINT FK_Albums_StudentId FOREIGN KEY (StudentId) REFERENCES Students(StudentId)
+);
 GO
 
-CREATE TABLE UNIVERSITY..final_grades (
-	album_id int NOT NULL,
-	final_grade  int,
-    subject_id  int NOT NULL,
-	academic_year int NOT NULL,
-	constraint FKFinalGradesSubject foreign key (subject_id) references subjects(subject_id),
-	constraint FKFinalGradesAlbums foreign key (album_id) references albums(album_id),
-	constraint FKFinalGradesAcademicYear foreign key (academic_year) references academic_year(academic_year_id)
+CREATE TABLE UNIVERSITY..FinalGrades (
+	AlbumId INT NOT NULL,
+	FinalGrade  INT,
+    SubjectId  INT NOT NULL,
+	AcademicYearId INT NOT NULL,
+	CONSTRAINT FK_FinalGrades_SubjectId FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId),
+	CONSTRAINT FK_FinalGrades_AlbumId FOREIGN KEY (AlbumId) REFERENCES Albums(AlbumId),
+	CONSTRAINT FK_FinalGrades_AcademicYearId FOREIGN KEY (AcademicYearId) REFERENCES AcademicYear(AcademicYearId)
 );
-
 GO
 
 
