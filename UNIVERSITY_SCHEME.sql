@@ -150,7 +150,7 @@ CREATE TABLE UNIVERSITY..FinalGrades (
 	CONSTRAINT FK_FinalGrades_AcademicYearId FOREIGN KEY (AcademicYearId) REFERENCES AcademicYear(AcademicYearId)
 );
 GO
-
+f
 
 
 
