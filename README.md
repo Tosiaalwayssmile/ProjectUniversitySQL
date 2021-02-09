@@ -10,5 +10,5 @@ SQL Server project with **triggers**, stored **procedures** and **functions** an
 5) **UNIVERSITY_QUERIES.sql** is being updated.
 6) **UNIVERSITY_TRIGGERS.sql** is being updated.
 
-7) **DatabaseModel.png** shows a database model from the **SQL diagram** tool
+7) **DatabaseModel.png** shows a database model from the **SQL diagram** tool.
 8) **Sprawozdanie.pdf** is a project report for this project. It includes **results for** all the **queries**, **functions**, **procedures** and **triggers**. It also has SQL diagram in better quality. 
