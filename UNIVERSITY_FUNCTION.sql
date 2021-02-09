@@ -9,7 +9,7 @@ GO
 CREATE FUNCTION PercentageOfStudentsInGroup (@GroupId INT) 
 RETURNS FLOAT AS
 BEGIN
-	DECLARE @Percentage FLOAT
+    DECLARE @Percentage FLOAT
 	DECLARE @NumberOfStudentsInGroup INT
 	DECLARE @AllStudents INT
 	SELECT @AllStudents = COUNT(*) FROM Students
