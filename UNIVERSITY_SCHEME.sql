@@ -17,13 +17,13 @@ CREATE DATABASE UNIVERSITY
 GO
 
 CREATE TABLE UNIVERSITY..Teachers( 
-	TeacherId		INT 
+	TeacherId		INT	IDENTITY(100,10) 
 	CONSTRAINT PK_TeacherId PRIMARY KEY (TeacherId),
     FirstName		VARCHAR(20),
     LastName		VARCHAR(25) NOT NULL,
     Email          VARCHAR(25)
 	CONSTRAINT     NN_TeacherEmail  NOT NULL,
-    Phone_number   VARCHAR(20),
+    PhoneNumber   VARCHAR(20),
     HireDate      DATE,
     Salary         MONEY
     CONSTRAINT     CHK_TeacherSalaryMin CHECK (Salary > 500), 
@@ -36,30 +36,30 @@ CREATE TABLE UNIVERSITY..Students(
 	CONSTRAINT PK_StudentId PRIMARY KEY (StudentId),
     FirstName     VARCHAR(20),
     LastName      VARCHAR(25) NOT NULL,
-    Phone_number   VARCHAR(20),
+    PhoneNumber   VARCHAR(20),
     BirthDate      DATE NOT NULL,
 	GroupId    INT
 );
 GO
 
 CREATE TABLE UNIVERSITY..Subjects(
-	SubjectId    INT
+	SubjectId    INT IDENTITY(1,1) 
 	CONSTRAINT PK_SubjectId PRIMARY KEY (SubjectId), 
     SubjectName  VARCHAR(30) NOT NULL,
-	MainTeacherId       INT	
+	MainTeacherId	INT	
 	CONSTRAINT FK_Subjects_MainTeacherId FOREIGN KEY (MainTeacherId) REFERENCES Teachers (TeacherId)
 );
 GO
 
 CREATE TABLE UNIVERSITY..Buildings(
-	BuildingId   INT NOT NULL,
+	BuildingId   INT IDENTITY(1,1),
     BuildingName   VARCHAR(20) NOT NULL
 	CONSTRAINT PK_BuildingId PRIMARY KEY (BuildingId)
 );
 GO
 
 CREATE TABLE UNIVERSITY..Classrooms(
-	ClassroomId    INT NOT NULL
+	ClassroomId    INT IDENTITY(1,1),
 	CONSTRAINT PK_ClassroomId PRIMARY KEY (ClassroomId),
     ClassroomName  VARCHAR(20) NOT NULL,
 	BuildingId   INT NOT NULL
@@ -90,14 +90,14 @@ ALTER TABLE UNIVERSITY..Students ADD CONSTRAINT FK_Students_StudentGroup FOREIGN
 GO
 
 CREATE TABLE UNIVERSITY..FieldOfStudy(
-	FieldOfStudyId     INT 
+	FieldOfStudyId     INT IDENTITY(1,1)
 	CONSTRAINT PK_FieldOfStudyId PRIMARY KEY (FieldOfStudyId),
 	FieldOfStudyName  VARCHAR(30) NOT NULL
 );
 GO
 
 CREATE TABLE UNIVERSITY..AcademicYear(
-	AcademicYearId	INT
+	AcademicYearId	INT IDENTITY(1,1)
 	CONSTRAINT PK_AcademicYearId PRIMARY KEY (AcademicYearId),
 	AcademicYearName	Date NOT NULL
 );
@@ -106,33 +106,33 @@ GO
 CREATE TABLE UNIVERSITY..GroupTypes(
 	GroupId    INT NOT NULL, 
 	GroupName  VARCHAR(30)  NOT NULL,
-	GroupType   VARCHAR(30)	NOT NULL,	
+	StudyMode   VARCHAR(30)	NOT NULL,	
 	AcademicYearId INT NOT NULL,
 	FieldOfStudyId INT NOT NULL,
 	CONSTRAINT FK_GroupTypes_AcademicYearId FOREIGN KEY (AcademicYearId) REFERENCES AcademicYear(AcademicYearId),
 	CONSTRAINT FK_GroupTypes_FieldOfStudyId FOREIGN KEY (FieldOfStudyId ) REFERENCES FieldOfStudy(FieldOfStudyId), 
 	CONSTRAINT FK_GroupTypes_GroupId FOREIGN KEY (GroupId) REFERENCES Groups (GroupId),
-	CONSTRAINT CHK_GroupTypeIn CHECK(GroupType IN('FULL TIME', 'PART TIME'))
+	CONSTRAINT CHK_StudyModeIn CHECK(StudyMode IN('FULL TIME', 'PART TIME'))
 );
 GO
 
 CREATE TABLE UNIVERSITY..Grades (
 	GradeId int NOT NULL IDENTITY(1,1)
 	CONSTRAINT PK_GradeId PRIMARY key (GradeId),
-	GradeName  INT NOT NULL,
-	GradeDate DATETIME,
+	GradeValue  FLOAT NOT NULL,
+	GradeDate DATE,
     SubjectId  INT NOT NULL,
 	StudentId  INT NOT NULL,
 	Note VARCHAR(30) NOT NULL,
 	CONSTRAINT FK_Grades_SubjectId FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId),
 	CONSTRAINT FK_Grades_StudentId FOREIGN KEY (StudentId) REFERENCES Students(StudentId),
-	CONSTRAINT CHK_GradeNameIn CHECK(GradeName IN ('1', '2', '3', '4','5','6'))
+	CONSTRAINT CHK_GradeValueIn CHECK(GradeValue IN ('2', '3', '3.5', '4', '4.5', '5'))
 );
 
 GO
 
 CREATE TABLE UNIVERSITY..Albums( 
-	AlbumId INT
+	AlbumId INT 
 	CONSTRAINT PK_AlbumId PRIMARY KEY (AlbumId),
 	StudentId	INT 
 	CONSTRAINT FK_Albums_StudentId FOREIGN KEY (StudentId) REFERENCES Students(StudentId)
