@@ -6,9 +6,9 @@ SQL Server project with **triggers**, stored **procedures** and **functions** an
 2) In **UNIVERSITY_DATA.sql** you can find a bunch of **INSERT** and some **UPDATE** examples to test out the project as well as SELECT queries to see the results.
 3) In **UNIVERSITY_FUNCTION.sql** you can find a **User Defined Function** returning percentage of all students in each group.
 
-4) **UNIVERSITY_PROCEDURES.sql** is being updated
-5) **UNIVERSITY_QUERIES.sql** is being updated
-6) **UNIVERSITY_TRIGGERS.sql** is being updated
+4) **UNIVERSITY_PROCEDURES.sql** is being updated.
+5) **UNIVERSITY_QUERIES.sql** is being updated.
+6) **UNIVERSITY_TRIGGERS.sql** is being updated.
 
 7) **DatabaseModel.png** shows a database model from the **SQL diagram** tool
-8) **Sprawozdanie.pdf** is a project report for this project. It includes **results for** all the **queries**, **functions**, **procedures** and **triggers**.It also has SQL diagram in better quality. 
+8) **Sprawozdanie.pdf** is a project report for this project. It includes **results for** all the **queries**, **functions**, **procedures** and **triggers**. It also has SQL diagram in better quality. 
