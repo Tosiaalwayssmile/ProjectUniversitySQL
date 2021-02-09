@@ -142,7 +142,7 @@ GO
 
 CREATE TABLE UNIVERSITY..FinalGrades (
     AlbumId INT NOT NULL,
-    FinalGrade  INT,
+    FinalGrade  INT,    
     SubjectId  INT NOT NULL,
     AcademicYearId INT NOT NULL,
     CONSTRAINT FK_FinalGrades_SubjectId FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId),
