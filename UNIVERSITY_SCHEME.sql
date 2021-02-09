@@ -1,4 +1,4 @@
-/****************	Different way of checking if database exists and creating it	****************/
+/********************************	Different way of checking if database exists and creating it	********************************/
 /*
 IF NOT EXISTS(
     SELECT * FROM master.dbo.sysdatabases 
