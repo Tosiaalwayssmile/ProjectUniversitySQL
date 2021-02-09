@@ -1,27 +1,45 @@
 USE UNIVERSITY;
------------------------ FUNCTION 1-----------------------------------
+/***************************************** FUNCTION 1 ********************************************/
+-- Function returning percentage of all students in each group.
 -- Funkcja podaj¹ca dla ka¿dej grupy, ile procent wszystkich studentów znajduje siê w tej grupie.
-IF OBJECT_ID ('group_perc') IS NOT NULL  
-drop function group_perc;
-go
-create function group_perc (@group_id varchar(15)) returns float
-as
-begin
-	declare @percentage float
-	declare @in_group float
-	declare @all float
-	select @all = count(*) from students
-	select @in_group = count (*) from students as s
-						where group_id in (select g.group_id from groups as g
-											  where g.group_id = @group_id)
 
-set @percentage = 100 * @in_group / @all
-return @percentage 
-end
-go
+IF OBJECT_ID ('PercentageOfStudentsInGroup') IS NOT NULL  
+DROP FUNCTION PercentageOfStudentsInGroup;
+GO
+CREATE FUNCTION PercentageOfStudentsInGroup (@GroupId INT) 
+RETURNS FLOAT AS
+BEGIN
+	DECLARE @Percentage FLOAT
+	DECLARE @NumberOfStudentsInGroup INT
+	DECLARE @AllStudents INT
+	SELECT @AllStudents = COUNT(*) FROM Students
+	SELECT @NumberOfStudentsInGroup = COUNT (*) FROM Students AS s
+    WHERE GroupId IN (
+                        SELECT g.GroupId FROM Groups AS g 
+                        WHERE g.GroupId = @GroupId
+                     )
+    SET @Percentage = 100.0 * @NumberOfStudentsInGroup / @AllStudents
+    
+    RETURN @Percentage 
+END
+GO
 
-select distinct gt.group_name AS 'Group',cast(round(dbo.group_perc(g.group_id), 1) as varchar)
-+ '%' as 'Percentage' from groups g, group_types gt where g.group_id = gt.group_id AND g.group_id =10 group by gt.group_name, g.group_id;
+/****************** #1 Query  ******************/
+SELECT DISTINCT GroupName AS 'Group Number', CAST(ROUND(dbo.PercentageOfStudentsInGroup(Groups.GroupId), 1) AS VARCHAR) + '%' as 'Percentage Of Students In Group' 
+FROM Groups, GroupTypes 
+WHERE Groups.GroupId = GroupTypes.GroupId AND Groups.GroupId = 10 
+GROUP BY GroupTypes.GroupName, Groups.GroupId;
 
-select distinct gt.group_name AS 'Group',cast(round(dbo.group_perc(g.group_id), 1) as varchar)
-+ '%' as 'Percentage' from groups g, group_types gt where g.group_id = gt.group_id group by gt.group_name, g.group_id;
+/****************** #2 Query  ******************/
+SELECT  GroupTypes.GroupName AS 'Group Number', CAST(ROUND(dbo.PercentageOfStudentsInGroup(Groups.GroupId), 1) AS VARCHAR) + '%' as 'Percentage Of Students In Group' 
+FROM Groups   
+INNER JOIN GroupTypes ON Groups.GroupId = GroupTypes.GroupId 
+GROUP BY GroupTypes.GroupName, Groups.GroupId;
+
+/****************** #2 Query (Version without "INNER JOIN") ******************/
+/*
+SELECT DISTINCT GroupTypes.GroupName AS 'Group', CAST(ROUND(dbo.PercentageOfStudentsInGroup(Groups.GroupId), 2) AS VARCHAR) + '%' as 'Percentage' 
+FROM Groups, GroupTypes  
+WHERE Groups.GroupId = GroupTypes.GroupId 
+GROUP BY GroupTypes.GroupName, Groups.GroupId;
+*/
