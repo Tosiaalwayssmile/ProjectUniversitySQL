@@ -18,9 +18,9 @@ AS BEGIN
     WHILE(@isNumberTaken = 'TRUE')
     BEGIN
         SET @Number = (600 + CONVERT(INT, (700 - 600 + 1) * RAND())) --Return a random int number >= 600 and <=700
-		SET @isNumberTaken = 'FALSE'
-
-		DECLARE Cursor_Student CURSOR FOR 
+        SET @isNumberTaken = 'FALSE'
+        
+        DECLARE Cursor_Student CURSOR FOR 
 		SELECT @StudentId FROM Students
 		OPEN Cursor_Student 
 		FETCH NEXT FROM Cursor_Student INTO @StudentId
