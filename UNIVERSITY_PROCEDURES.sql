@@ -31,15 +31,15 @@ AS BEGIN
                 SET @isNumberTaken = 'TRUE';
                 BREAK;
             END
-			FETCH NEXT FROM Cursor_Student INTO @StudentId
-	    END 
-		CLOSE Cursor_Student 
-		DEALLOCATE Cursor_Student
-
-		IF(@isNumberTaken = 'FALSE')
-		SET @StudentId = @Number;
-	END
-	INSERT INTO students VALUES(@StudentId, @FirstName, @LastName, @PhoneNumber, @BirthDate, @GroupId);
+            FETCH NEXT FROM Cursor_Student INTO @StudentId
+        END 
+        CLOSE Cursor_Student 
+        DEALLOCATE Cursor_Student
+        
+        IF(@isNumberTaken = 'FALSE')
+        SET @StudentId = @Number;
+    END
+    INSERT INTO students VALUES(@StudentId, @FirstName, @LastName, @PhoneNumber, @BirthDate, @GroupId);
 END
 GO
 
