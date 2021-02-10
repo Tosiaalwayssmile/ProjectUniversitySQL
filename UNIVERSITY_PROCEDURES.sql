@@ -6,7 +6,7 @@ DROP PROCEDURE IF EXISTS ADD_STUDENT;
 GO
 
 CREATE PROCEDURE ADD_STUDENT
-    @FirstName VARCHAR(25),
+        @FirstName VARCHAR(25),
 	@LastName VARCHAR(25),
 	@PhoneNumber VARCHAR(15),
 	@BirthDate DATE,
@@ -15,7 +15,7 @@ CREATE PROCEDURE ADD_STUDENT
 AS BEGIN
     DECLARE @StudentId INT;
     DECLARE @Number int, @isNumberTaken BIT = 'TRUE';
-	WHILE(@isNumberTaken = 'TRUE')
+    WHILE(@isNumberTaken = 'TRUE')
     BEGIN
 			SET @Number = (600 + CONVERT(INT, (700 - 600 + 1) * RAND())) --Return a random int number >= 600 and <=700
 			SET @isNumberTaken = 'FALSE'
@@ -25,14 +25,14 @@ AS BEGIN
 			OPEN Cursor_Student 
 			FETCH NEXT FROM Cursor_Student INTO @StudentId
 			WHILE @@FETCH_STATUS = 0
-			   BEGIN 
+			BEGIN 
 				  IF(@Number = @StudentId)
 				  BEGIN
 					SET @isNumberTaken = 'TRUE';
 					BREAK;
 				  END
 				  FETCH NEXT FROM Cursor_Student INTO @StudentId
-			   END 
+			END 
 			CLOSE Cursor_Student 
 			DEALLOCATE Cursor_Student
 
@@ -54,7 +54,7 @@ GO
 /***************************************** PROCEDURE #2 ********************************************/
 -- EN: Procedure MODIFY_SALARY calculates raise in salary by given percentage and assigns this value 
 -- EN: to the teacher with a given id.
--- PL: Procedura MODIFY_SALARY wprowadza podwy¿kê pensji o dany procent wyk³adowcy o podanym id.
+-- PL: Procedura MODIFY_SALARY wprowadza podwyÂ¿kÃª pensji o dany procent wykÂ³adowcy o podanym id.
 DROP PROCEDURE IF EXISTS MODIFY_SALARY;
 GO
 CREATE PROCEDURE MODIFY_SALARY
@@ -64,9 +64,9 @@ AS
 BEGIN
 	IF(@TeacherId IN (SELECT TeacherId  FROM Teachers))
 	BEGIN
-	    UPDATE Teachers
+	UPDATE Teachers
         SET Salary += Salary * (@Percentage) / 100
-	    WHERE @TeacherId = @TeacherId
+	WHERE @TeacherId = @TeacherId
         PRINT ('Teacher with id number: ' + CAST(@TeacherId AS VARCHAR) + ' got a ' 
         + CAST(@percentage AS VARCHAR) + '% raise in salary.')					
 	END
@@ -86,8 +86,8 @@ GO
 /***************************************** PROCEDURE #3 ********************************************/
 -- EN: Procedure DELETE_TEACHER deletes teacher with no assigned subjects. 
 -- EN: Deleting teachers with assigned subjects is not possible.
--- PL: Procedura DELETE_TEACHER usuwa wyk³adowców, którzy nie ucz¹ ¿adnych przedmiotów. 
--- PL: Niemo¿liwe jest usuniêcie wyk³adowcy, który uczy jakiegoœ przedmiotu.
+-- PL: Procedura DELETE_TEACHER usuwa wykÂ³adowcÃ³w, ktÃ³rzy nie uczÂ¹ Â¿adnych przedmiotÃ³w. 
+-- PL: NiemoÂ¿liwe jest usuniÃªcie wykÂ³adowcy, ktÃ³ry uczy jakiegoÅ“ przedmiotu.
 DROP PROCEDURE IF EXISTS DELETE_TEACHER;
 GO
 CREATE PROCEDURE DELETE_TEACHER 
@@ -107,7 +107,7 @@ GO
 SELECT* FROM Teachers
 BEGIN
     EXEC UNIVERSITY..DELETE_TEACHER 160
-	EXEC UNIVERSITY..DELETE_TEACHER 150
+    EXEC UNIVERSITY..DELETE_TEACHER 150
 END
 SELECT* FROM Teachers
 
