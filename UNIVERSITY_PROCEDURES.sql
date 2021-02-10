@@ -8,9 +8,9 @@ GO
 CREATE PROCEDURE ADD_STUDENT
     @FirstName VARCHAR(25),
     @LastName VARCHAR(25),
-	@PhoneNumber VARCHAR(15),
-	@BirthDate DATE,
-	@GroupId INT
+    @PhoneNumber VARCHAR(15),
+    @BirthDate DATE,
+    @GroupId INT
 
 AS BEGIN
     DECLARE @StudentId INT;
