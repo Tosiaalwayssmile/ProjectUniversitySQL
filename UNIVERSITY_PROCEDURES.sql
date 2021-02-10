@@ -62,16 +62,16 @@ CREATE PROCEDURE MODIFY_SALARY
     @Percentage int = 10
 AS
 BEGIN
-	IF(@TeacherId IN (SELECT TeacherId  FROM Teachers))
-	BEGIN
-	    UPDATE Teachers
+    IF(@TeacherId IN (SELECT TeacherId  FROM Teachers))
+    BEGIN
+        UPDATE Teachers
         SET Salary += Salary * (@Percentage) / 100
         WHERE @TeacherId = @TeacherId
         PRINT ('Teacher with id number: ' + CAST(@TeacherId AS VARCHAR) + ' got a ' 
-        + CAST(@percentage AS VARCHAR) + '% raise in salary.')					
-	END
-	ELSE
-	PRINT('Incorrect teacher id.')
+        + CAST(@percentage AS VARCHAR) + '% raise in salary.')				
+    END
+    ELSE
+    PRINT('Incorrect teacher id.')
 END
 GO
 
