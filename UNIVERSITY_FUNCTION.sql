@@ -10,16 +10,12 @@ CREATE FUNCTION PercentageOfStudentsInGroup (@GroupId INT)
 RETURNS FLOAT AS
 BEGIN
     DECLARE @Percentage FLOAT
-	DECLARE @NumberOfStudentsInGroup INT
-	DECLARE @AllStudents INT
-	SELECT @AllStudents = COUNT(*) FROM Students
-	SELECT @NumberOfStudentsInGroup = COUNT (*) FROM Students AS s
-    WHERE GroupId IN (
-                        SELECT g.GroupId FROM Groups AS g 
-                        WHERE g.GroupId = @GroupId
-                     )
+    DECLARE @NumberOfStudentsInGroup INT
+    DECLARE @AllStudents INT
+    SELECT @AllStudents = COUNT(*) FROM Students
+    SELECT @NumberOfStudentsInGroup = COUNT (*) FROM Students AS s
+    WHERE GroupId IN (SELECT g.GroupId FROM Groups AS g WHERE g.GroupId = @GroupId)
     SET @Percentage = 100.0 * @NumberOfStudentsInGroup / @AllStudents
-    
     RETURN @Percentage 
 END
 GO
