@@ -99,11 +99,12 @@ BEGIN
     WHERE Teachers.TeacherId = Timetables.TeacherId))
     BEGIN
         DELETE FROM Teachers WHERE TeacherId = @TeacherId
-		PRINT('Teacher '+ CAST(@TeacherId AS VARCHAR) + ' was deleted.')
-	END
-	ELSE PRINT('Teacher '+ CAST(@TeacherId AS VARCHAR) + ' cannot be deleted.')
+        PRINT('Teacher '+ CAST(@TeacherId AS VARCHAR) + ' was deleted.')
+    END
+    ELSE PRINT('Teacher '+ CAST(@TeacherId AS VARCHAR) + ' cannot be deleted.')
 END
 GO
+
 SELECT* FROM Teachers
 BEGIN
     EXEC UNIVERSITY..DELETE_TEACHER 160
