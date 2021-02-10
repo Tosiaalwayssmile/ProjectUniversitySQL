@@ -5,7 +5,7 @@ SQL Server project with **triggers**, stored **procedures** and **functions** an
 1) In **UNIVERSITY_SCHEMA.sql** you can find my own database schema including 13 tables with **relations one-to-many and many-to-many**.
 2) In **UNIVERSITY_DATA.sql** you can find a bunch of **INSERT** and some **UPDATE** examples to test out the project as well as **SELECT** queries to see the results.
 3) In **UNIVERSITY_FUNCTION.sql** you can find a **User Defined Function** returning percentage of all students in each group.
-4) In **UNIVERSITY_PROCEDURES.sql** you can find three **User Defined PROCEDURES**. E.g. procedure ADD_STUDENT assigns random ID when new student is INSERTED. It uses **cursor** to go through every student and check if new ID is not already in database.
+4) In **UNIVERSITY_PROCEDURES.sql** you can find three **User Defined Procedures**. E.g. procedure ADD_STUDENT assigns random ID when new student is inserted. It uses **cursor** to go through every student and check if new ID is not already in database.
 
 5) **UNIVERSITY_QUERIES.sql** is being updated.
 6) **UNIVERSITY_TRIGGERS.sql** is being updated.
