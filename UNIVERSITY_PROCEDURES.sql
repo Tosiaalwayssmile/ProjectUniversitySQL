@@ -66,7 +66,7 @@ BEGIN
 	BEGIN
 	    UPDATE Teachers
         SET Salary += Salary * (@Percentage) / 100
-	    WHERE @TeacherId = @TeacherId
+        WHERE @TeacherId = @TeacherId
         PRINT ('Teacher with id number: ' + CAST(@TeacherId AS VARCHAR) + ' got a ' 
         + CAST(@percentage AS VARCHAR) + '% raise in salary.')					
 	END
