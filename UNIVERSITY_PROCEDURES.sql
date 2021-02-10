@@ -27,10 +27,10 @@ AS BEGIN
         WHILE @@FETCH_STATUS = 0
         BEGIN 
             IF(@Number = @StudentId)
-		    BEGIN
-			    SET @isNumberTaken = 'TRUE';
-				BREAK;
-			END
+            BEGIN
+                SET @isNumberTaken = 'TRUE';
+                BREAK;
+            END
 			FETCH NEXT FROM Cursor_Student INTO @StudentId
 	    END 
 		CLOSE Cursor_Student 
