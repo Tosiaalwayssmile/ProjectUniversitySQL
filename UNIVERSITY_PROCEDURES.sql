@@ -6,7 +6,7 @@ DROP PROCEDURE IF EXISTS ADD_STUDENT;
 GO
 
 CREATE PROCEDURE ADD_STUDENT
-        @FirstName VARCHAR(25),
+    @FirstName VARCHAR(25),
 	@LastName VARCHAR(25),
 	@PhoneNumber VARCHAR(15),
 	@BirthDate DATE,
@@ -17,27 +17,27 @@ AS BEGIN
     DECLARE @Number int, @isNumberTaken BIT = 'TRUE';
     WHILE(@isNumberTaken = 'TRUE')
     BEGIN
-			SET @Number = (600 + CONVERT(INT, (700 - 600 + 1) * RAND())) --Return a random int number >= 600 and <=700
-			SET @isNumberTaken = 'FALSE'
+        SET @Number = (600 + CONVERT(INT, (700 - 600 + 1) * RAND())) --Return a random int number >= 600 and <=700
+		SET @isNumberTaken = 'FALSE'
 
-			DECLARE Cursor_Student CURSOR FOR 
-			SELECT @StudentId FROM Students
-			OPEN Cursor_Student 
+		DECLARE Cursor_Student CURSOR FOR 
+		SELECT @StudentId FROM Students
+		OPEN Cursor_Student 
+		FETCH NEXT FROM Cursor_Student INTO @StudentId
+		WHILE @@FETCH_STATUS = 0
+		BEGIN 
+		    IF(@Number = @StudentId)
+		    BEGIN
+			    SET @isNumberTaken = 'TRUE';
+				BREAK;
+			END
 			FETCH NEXT FROM Cursor_Student INTO @StudentId
-			WHILE @@FETCH_STATUS = 0
-			BEGIN 
-				  IF(@Number = @StudentId)
-				  BEGIN
-					SET @isNumberTaken = 'TRUE';
-					BREAK;
-				  END
-				  FETCH NEXT FROM Cursor_Student INTO @StudentId
-			END 
-			CLOSE Cursor_Student 
-			DEALLOCATE Cursor_Student
+	    END 
+		CLOSE Cursor_Student 
+		DEALLOCATE Cursor_Student
 
-			IF(@isNumberTaken = 'FALSE')
-			SET @StudentId = @Number;
+		IF(@isNumberTaken = 'FALSE')
+		SET @StudentId = @Number;
 	END
 	INSERT INTO students VALUES(@StudentId, @FirstName, @LastName, @PhoneNumber, @BirthDate, @GroupId);
 END
@@ -45,7 +45,7 @@ GO
 
 /********* Columns in dbo.Students: StudentId, FirstName, LastName, PhoneNumber, BirthDate, GroupId *********/
 BEGIN
-	EXEC UNIVERSITY..ADD_STUDENT 'John', 'Green', '0-22-111-7532', '03-FEB-1998', '13' 
+    EXEC UNIVERSITY..ADD_STUDENT 'John', 'Green', '0-22-111-7532', '03-FEB-1998', '13' 
 END
 
 SELECT * FROM Students WHERE LastName = 'Green'
@@ -64,9 +64,9 @@ AS
 BEGIN
 	IF(@TeacherId IN (SELECT TeacherId  FROM Teachers))
 	BEGIN
-	UPDATE Teachers
+	    UPDATE Teachers
         SET Salary += Salary * (@Percentage) / 100
-	WHERE @TeacherId = @TeacherId
+	    WHERE @TeacherId = @TeacherId
         PRINT ('Teacher with id number: ' + CAST(@TeacherId AS VARCHAR) + ' got a ' 
         + CAST(@percentage AS VARCHAR) + '% raise in salary.')					
 	END
@@ -77,8 +77,8 @@ GO
 
 SELECT* FROM Teachers
 BEGIN
-	EXEC UNIVERSITY..MODIFY_SALARY 
-	EXEC UNIVERSITY..MODIFY_SALARY 150, 50
+    EXEC UNIVERSITY..MODIFY_SALARY 
+    EXEC UNIVERSITY..MODIFY_SALARY 150, 50
 END
 SELECT* FROM Teachers
 GO
@@ -101,7 +101,7 @@ BEGIN
         DELETE FROM Teachers WHERE TeacherId = @TeacherId
 		PRINT('Teacher '+ CAST(@TeacherId AS VARCHAR) + ' was deleted.')
 	END
-		ELSE PRINT('Teacher '+ CAST(@TeacherId AS VARCHAR) + ' cannot be deleted.')
+	ELSE PRINT('Teacher '+ CAST(@TeacherId AS VARCHAR) + ' cannot be deleted.')
 END
 GO
 SELECT* FROM Teachers
