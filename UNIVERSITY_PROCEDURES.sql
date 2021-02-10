@@ -26,7 +26,7 @@ AS BEGIN
 			FETCH NEXT FROM Cursor_Student INTO @StudentId
 			WHILE @@FETCH_STATUS = 0
 			   BEGIN 
-				  IF(CAST(@Number AS VARCHAR) = @StudentId)
+				  IF(@Number = @StudentId)
 				  BEGIN
 					SET @isNumberTaken = 'TRUE';
 					BREAK;
@@ -37,21 +37,19 @@ AS BEGIN
 			DEALLOCATE Cursor_Student
 
 			IF(@isNumberTaken = 'FALSE')
-			SET @StudentId = CAST(@Number as VARCHAR);
+			SET @StudentId = @Number;
 	END
 	INSERT INTO students VALUES(@StudentId, @FirstName, @LastName, @PhoneNumber, @BirthDate, @GroupId);
 END
 GO
 
-BEGIN
 /********* Columns in dbo.Students: StudentId, FirstName, LastName, PhoneNumber, BirthDate, GroupId *********/
+BEGIN
 	EXEC UNIVERSITY..ADD_STUDENT 'John', 'Green', '0-22-111-7532', '03-FEB-1998', '13' 
 END
 
 SELECT * FROM Students WHERE LastName = 'Green'
 GO
-
-
 
 /***************************************** PROCEDURE #2 ********************************************/
 -- EN: Procedure MODIFY_SALARY calculates raise in salary by given percentage and assigns this value 
@@ -111,6 +109,6 @@ BEGIN
     EXEC UNIVERSITY..DELETE_TEACHER 160
 	EXEC UNIVERSITY..DELETE_TEACHER 150
 END
-SELECT* FROM teachers
+SELECT* FROM Teachers
 
 
