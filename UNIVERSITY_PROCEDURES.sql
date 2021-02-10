@@ -21,12 +21,12 @@ AS BEGIN
         SET @isNumberTaken = 'FALSE'
         
         DECLARE Cursor_Student CURSOR FOR 
-		SELECT @StudentId FROM Students
-		OPEN Cursor_Student 
-		FETCH NEXT FROM Cursor_Student INTO @StudentId
-		WHILE @@FETCH_STATUS = 0
-		BEGIN 
-		    IF(@Number = @StudentId)
+        SELECT @StudentId FROM Students
+        OPEN Cursor_Student 
+        FETCH NEXT FROM Cursor_Student INTO @StudentId
+        WHILE @@FETCH_STATUS = 0
+        BEGIN 
+            IF(@Number = @StudentId)
 		    BEGIN
 			    SET @isNumberTaken = 'TRUE';
 				BREAK;
