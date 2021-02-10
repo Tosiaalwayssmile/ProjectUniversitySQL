@@ -1,6 +1,6 @@
  USE UNIVERSITY;
-/************************************ Teacher table INSERT  ************************************/
-/********* Fields: TeacherId(identity), FirstName, LastName, Email, PhoneNumber, HireDate, Salary *********/
+/************************************ Teacher Table INSERT  ************************************/
+/********* Columns: TeacherId(identity), FirstName, LastName, Email, PhoneNumber, HireDate, Salary *********/
 INSERT INTO UNIVERSITY..Teachers VALUES ('Nancy', 'Greenberg', 'NGREENBE', '515.124.4569', CAST('17-AUG-1994'AS DATE), 1700);
 INSERT INTO UNIVERSITY..Teachers VALUES ('Daniel', 'Faviet', 'DFAVIET', '515.364.4169', CAST('16-AUG-1994'AS DATE), 2300);		
 INSERT INTO UNIVERSITY..Teachers VALUES ('John', 'Chen', 'JCHEN', '515.564.4269', CAST('28-SEP-1997'AS DATE), 2100);	
@@ -11,8 +11,8 @@ INSERT INTO UNIVERSITY..Teachers VALUES ('Not', 'Working', 'NWORK', 'NULL', '12-
 UPDATE Teachers SET PhoneNumber ='515.124.3222' WHERE TeacherId = 150;
 
 SELECT * FROM Teachers;
-/************************************ Groups table INSERT  ************************************/
-/********************* Fields: GroupId, MinNrOfStudents, MaxNrOfStudents **********************/
+/************************************ Groups Table INSERT  ************************************/
+/********************* Columns: GroupId, MinNrOfStudents, MaxNrOfStudents **********************/
 INSERT INTO UNIVERSITY..Groups VALUES (10, 1, 250);  
 INSERT INTO UNIVERSITY..Groups VALUES (11, 1, 250);
 INSERT INTO UNIVERSITY..Groups VALUES (12, 1, 250);
@@ -28,20 +28,20 @@ INSERT INTO UNIVERSITY..Groups VALUES (30, 1, 250);
 INSERT INTO UNIVERSITY..Groups VALUES (40, 1, 250); 
 
 SELECT * FROM Groups;
-/************************************ FieldOfStudy table INSERT  ************************************/
-/*************************** Fields: FieldOfStudyId(identity), FieldOfStudyName *********************/
+/************************************ FieldOfStudy Table INSERT  ************************************/
+/*************************** Columns: FieldOfStudyId(identity), FieldOfStudyName *********************/
 INSERT INTO UNIVERSITY..FieldOfStudy VALUES ('IT');
 INSERT INTO UNIVERSITY..FieldOfStudy VALUES ('Mathematics');
 INSERT INTO UNIVERSITY..FieldOfStudy VALUES ('Physics');
 
 SELECT * FROM FieldOfStudy;
-/************************************ AcademicYear table INSERT  ************************************/
-/***************************** Fields: AcademicYearId(identity), AcademicYearName *****************************/
+/************************************ AcademicYear Table INSERT  ************************************/
+/***************************** Columns: AcademicYearId(identity), AcademicYearName *****************************/
 INSERT INTO UNIVERSITY..AcademicYear VALUES ('2017/11/10');
 
 SELECT * FROM AcademicYear;
-/************************************ GroupTypes table INSERT  ************************************/
-/************** Fields: GroupId, GroupName, StudyMode, AcademicYearId, FieldOfStudyId *************/
+/************************************ GroupTypes Table INSERT  ************************************/
+/************** Columns: GroupId, GroupName, StudyMode, AcademicYearId, FieldOfStudyId *************/
 INSERT INTO UNIVERSITY..GroupTypes VALUES ( 10, '10', 'FULL TIME', 1, 1);    
 INSERT INTO UNIVERSITY..GroupTypes VALUES ( 11, '11', 'FULL TIME', 1, 1);  
 INSERT INTO UNIVERSITY..GroupTypes VALUES ( 12, '12', 'PART TIME', 1, 1); 
@@ -59,8 +59,8 @@ INSERT INTO UNIVERSITY..GroupTypes VALUES ( 30, '30', 'FULL TIME', 1, 3);
 INSERT INTO UNIVERSITY..GroupTypes VALUES ( 40, '40', 'PART TIME', 1, 3); 
 
 SELECT * FROM GroupTypes;
-/************************************ Students table INSERT  ************************************/
-/********* Fields: StudentId, FirstName, LastName, PhoneNumber, BirthDate, GroupId *********/
+/************************************ Students Table INSERT  ************************************/
+/********* Columns: StudentId, FirstName, LastName, PhoneNumber, BirthDate, GroupId *********/
 INSERT INTO UNIVERSITY..Students VALUES ( 600, 'Susan', 'Mavris', '516.124.4567', CAST('13-DEC-1996'AS DATE), 10);
 INSERT INTO UNIVERSITY..Students VALUES ( 610, 'Hermann', 'Baer', '516.125.4547', CAST('01-JUL-1996'AS DATE), 10);
 INSERT INTO UNIVERSITY..Students VALUES ( 620, 'Shelley', 'Higgins', '513.124.4190', CAST('07-JUN-1997'AS DATE), 10);
@@ -132,8 +132,8 @@ INSERT INTO UNIVERSITY..Students VALUES ( 1150, 'Ed', 'Sheeran', '524.177.7217',
 INSERT INTO UNIVERSITY..Students VALUES ( 1160, 'Selena', 'Gomez', '523.137.7217', CAST('22-JUL-1992'AS DATE), 40);
 
 SELECT * FROM Students;
-/************************************ Subjects table INSERT  ************************************/
-/***************************** Fields: SubjectId(identity), SubjectName, MainTeacherId *****************************/
+/************************************ Subjects Table INSERT  ************************************/
+/***************************** Columns: SubjectId(identity), SubjectName, MainTeacherId *****************************/
 INSERT INTO UNIVERSITY..Subjects VALUES ('SYSOPY', 100);
 INSERT INTO UNIVERSITY..Subjects VALUES ('ZSBD', 110);
 INSERT INTO UNIVERSITY..Subjects VALUES ('TP', 120);
@@ -146,23 +146,23 @@ INSERT INTO UNIVERSITY..Subjects VALUES ('EMBEDDED', 120);
 INSERT INTO UNIVERSITY..Subjects VALUES ('CAD', 150);
 
 SELECT * FROM Subjects;
-/************************************** Buildings table INSERT  ***************************************/
-/***************************** Fields: BuildingId(identity), BuildingName *****************************/
+/************************************** Buildings Table INSERT  ***************************************/
+/***************************** Columns: BuildingId(identity), BuildingName *****************************/
 INSERT INTO UNIVERSITY..Buildings VALUES ('B9');
 INSERT INTO UNIVERSITY..Buildings VALUES ('CTI');
 INSERT INTO UNIVERSITY..Buildings VALUES ('B14');
 
 SELECT * FROM Buildings;
-/******************************************* Classrooms table INSERT  ************88*********************************/
-/***************************** Fields: ClassroomId(identity), ClassroomName, BuildingId *****************************/
+/******************************************* Classrooms Table INSERT  ************88*********************************/
+/***************************** Columns: ClassroomId(identity), ClassroomName, BuildingId *****************************/
 INSERT INTO UNIVERSITY..Classrooms VALUES ('F10', 1);
 INSERT INTO UNIVERSITY..Classrooms VALUES ('AULA', 3);
 INSERT INTO UNIVERSITY..Classrooms VALUES ('F.04', 3);
 INSERT INTO UNIVERSITY..Classrooms VALUES ('409', 2);
 
 SELECT * FROM Classrooms;
-/***************************************** Timetables table INSERT  ********************************************/
-/***************************** Fields:SubjectId, StudentId, TeacherId, ClassroomId *****************************/
+/***************************************** Timetables Table INSERT  ********************************************/
+/***************************** Columns:SubjectId, StudentId, TeacherId, ClassroomId *****************************/
 INSERT INTO UNIVERSITY..Timetables VALUES ( 1, 600, 100, 1);
 INSERT INTO UNIVERSITY..Timetables VALUES ( 2, 600, 110, 1);
 INSERT INTO UNIVERSITY..Timetables VALUES ( 3, 600, 120, 2);
@@ -251,8 +251,8 @@ INSERT INTO UNIVERSITY..Timetables VALUES ( 1, 1140, 130, 2);
 INSERT INTO UNIVERSITY..Timetables VALUES ( 1, 1070, 130, 2);
 
 SELECT * FROM Timetables;
-/******************************************* Grades table INSERT  ************88*********************************/
-/******************* Fields: GradeId(identity), GradeValue, GradeDate, SubjectId, StudentId, Note ***************/
+/******************************************* Grades Table INSERT  ************88*********************************/
+/******************* Columns: GradeId(identity), GradeValue, GradeDate, SubjectId, StudentId, Note ***************/
 INSERT INTO UNIVERSITY..Grades VALUES (3.5, '2017/11/10', 1, 600, 'For Homework'); 
 INSERT INTO UNIVERSITY..Grades VALUES (3, '2017/12/14', 1, 600, 'Test');
 INSERT INTO UNIVERSITY..Grades VALUES (2, '2018/02/01', 5, 610, 'Mid test');
@@ -268,8 +268,8 @@ INSERT INTO UNIVERSITY..Grades VALUES (5, '2018/06/01', 5, 670, 'For Homework');
 INSERT INTO UNIVERSITY..Grades VALUES (4, '2018/05/30', 3, 670, 'Project');
 
 SELECT * FROM Grades;
-/******************************************* Albums table INSERT  *********************************************/
-/**************************************** Fields: AlbumId, StudentId ********************************/
+/******************************************* Albums Table INSERT  *********************************************/
+/**************************************** Columns: AlbumId, StudentId ********************************/
 INSERT INTO UNIVERSITY..Albums VALUES (1, 600);
 INSERT INTO UNIVERSITY..Albums VALUES (2, 610);
 INSERT INTO UNIVERSITY..Albums VALUES (3, 620);
@@ -329,8 +329,8 @@ INSERT INTO UNIVERSITY..Albums VALUES (56, 1150);
 INSERT INTO UNIVERSITY..Albums VALUES (57, 1160); 
 
 SELECT * FROM Albums;
-/******************************************* FinalGrades table INSERT  *********************************************/
-/********************************* Fields: AlbumId, FinalGrade, SubjectId, AcademicYearId **************************/
+/******************************************* FinalGrades Table INSERT  *********************************************/
+/********************************* Columns: AlbumId, FinalGrade, SubjectId, AcademicYearId **************************/
 INSERT INTO UNIVERSITY..FinalGrades VALUES (1, 5, 1, 1);
 INSERT INTO UNIVERSITY..FinalGrades VALUES (1, 4, 3, 1);
 INSERT INTO UNIVERSITY..FinalGrades VALUES (1, 4, 2, 1);

@@ -1,5 +1,5 @@
 USE UNIVERSITY;
-/***************************************** FUNCTION 1 ********************************************/
+/***************************************** FUNCTION #1 ********************************************/
 -- Function returning percentage of all students in each group.
 -- Funkcja podajaca dla kazdej grupy, ile procent wszystkich studentów znajduje sie w tej grupie.
 

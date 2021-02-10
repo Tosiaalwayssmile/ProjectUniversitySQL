@@ -20,7 +20,7 @@ GO
 CREATE TABLE UNIVERSITY..Teachers(
     TeacherId		INT	IDENTITY(100,10) 
     CONSTRAINT PK_TeacherId PRIMARY KEY (TeacherId),
-    FirstName		VARCHAR(20),
+    FirstName		VARCHAR(25),
     LastName		VARCHAR(25) NOT NULL,
     Email          VARCHAR(25)
     CONSTRAINT     NN_TeacherEmail  NOT NULL,
