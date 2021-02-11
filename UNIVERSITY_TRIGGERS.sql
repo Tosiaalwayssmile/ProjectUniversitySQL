@@ -123,11 +123,10 @@ ON Students
 INSTEAD OF DELETE
 AS
 BEGIN
-	DECLARE @StudentId INT = (SELECT StudentId FROM DELETED),
+    DECLARE @StudentId INT = (SELECT StudentId FROM DELETED),
     @NumberOfSubjects INT,
-    @FirstName VARCHAR(20) = (SELECT FirstName FROM DELETED),
     @LastName VARCHAR(25) = (SELECT LastName FROM DELETED)
-	SET @NumberOfSubjects = (SELECT COUNT(SubjectId) 
+    SET @NumberOfSubjects = (SELECT COUNT(SubjectId) 
 	FROM Timetables	WHERE StudentId = @StudentId)
 
 	DELETE FROM Timetables
