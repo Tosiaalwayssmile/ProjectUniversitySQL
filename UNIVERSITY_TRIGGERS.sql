@@ -2,7 +2,7 @@ Use UNIVERSITY;
 /***************************************************** TRIGGER #1 ********************************************************/
 -- EN: Trigger CHECK_INSERTED_GRADE does not allow inserting a grade when student is not attending selected course (subject)
 IF OBJECT_ID ('CHECK_INSERTED_GRADE' , 'TR') IS NOT NULL  
-    DROP TRIGGER CHECK_INSERTED_GRADE ;
+    DROP TRIGGER CHECK_INSERTED_GRADE;
 GO
 CREATE TRIGGER CHECK_INSERTED_GRADE 
 ON Grades INSTEAD OF INSERT
@@ -14,10 +14,10 @@ BEGIN
     ON s.StudentId = t.StudentId
     WHERE @StudentId = t.StudentId AND @InsertedSubjectId = t.SubjectId)
     DECLARE @Note VARCHAR(30) = (SELECT Note FROM INSERTED),
-        @GradeValue INT = (SELECT GradeValue FROM INSERTED),
-        @GradeDate DATE = (SELECT GradeDate FROM INSERTED),
-        @StudentName VARCHAR(55) = (SELECT FirstName + ' ' + LastName FROM Students WHERE StudentId = @StudentId),
-        @SubjectName VARCHAR(30) = (SELECT SubjectName FROM Subjects WHERE SubjectId = @InsertedSubjectId)
+    @GradeValue INT = (SELECT GradeValue FROM INSERTED),
+    @GradeDate DATE = (SELECT GradeDate FROM INSERTED),
+    @StudentName VARCHAR(55) = (SELECT FirstName + ' ' + LastName FROM Students WHERE StudentId = @StudentId),
+    @SubjectName VARCHAR(30) = (SELECT SubjectName FROM Subjects WHERE SubjectId = @InsertedSubjectId)
             
     IF(@InsertedSubjectId = @AttendendSubjectId)
         BEGIN
@@ -38,7 +38,7 @@ GO
 /***************************************************** TRIGGER #2 ********************************************************/
 -- EN: Trigger TEACHER_HIRE_DATE inserts current date when new teacher is employed (inserted).
 IF OBJECT_ID ('TEACHER_HIRE_DATE' , 'TR') IS NOT NULL  
-    DROP TRIGGER TEACHER_HIRE_DATE ;
+    DROP TRIGGER TEACHER_HIRE_DATE;
 GO
 CREATE TRIGGER TEACHER_HIRE_DATE
 ON Teachers
@@ -61,7 +61,7 @@ SELECT * FROM Teachers WHERE Teachers.PhoneNumber = '305.124.4567'
 /***************************************************** TRIGGER #3 ********************************************************/
 -- EN: Trigger ENTER_FINAL_GRADES inserts 'final grade' as AVG of all grades when new academic year starts.
 IF OBJECT_ID ('ENTER_FINAL_GRADES' , 'TR') IS NOT NULL
-    DROP TRIGGER ENTER_FINAL_GRADES ;
+    DROP TRIGGER ENTER_FINAL_GRADES;
 GO
 CREATE TRIGGER ENTER_FINAL_GRADES
 ON AcademicYear
@@ -116,7 +116,7 @@ INSERT INTO AcademicYear VALUES('2021/10/15');
 -- EN: Trigger DELETE_STUDENT deletes student as well as all references to this student.
 SELECT* FROM Students WHERE StudentId = 600
 IF OBJECT_ID ('DELETE_STUDENT' , 'TR') IS NOT NULL
-    DROP TRIGGER DELETE_STUDENT ;
+    DROP TRIGGER DELETE_STUDENT;
 GO
 CREATE TRIGGER DELETE_STUDENT
 ON Students
@@ -124,9 +124,9 @@ INSTEAD OF DELETE
 AS
 BEGIN
 	DECLARE @StudentId INT = (SELECT StudentId FROM DELETED),
-			@NumberOfSubjects INT,
-			@FirstName VARCHAR(20) = (SELECT FirstName FROM DELETED),
-			@LastName VARCHAR(25) = (SELECT LastName FROM DELETED)
+    @NumberOfSubjects INT,
+    @FirstName VARCHAR(20) = (SELECT FirstName FROM DELETED),
+    @LastName VARCHAR(25) = (SELECT LastName FROM DELETED)
 	SET @NumberOfSubjects = (SELECT COUNT(SubjectId) 
 	FROM Timetables	WHERE StudentId = @StudentId)
 
