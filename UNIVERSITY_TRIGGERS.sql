@@ -1,7 +1,6 @@
 Use UNIVERSITY;
-/***************************************** TRIGGER #1 ********************************************/
--- EN: Trigger CHECK_INSERTED_GRADE does not allow inserting a grade when student is not attending 
--- selected course (subject)
+/***************************************************** TRIGGER #1 ********************************************************/
+-- EN: Trigger CHECK_INSERTED_GRADE does not allow inserting a grade when student is not attending selected course (subject)
 IF OBJECT_ID ('CHECK_INSERTED_GRADE' , 'TR') IS NOT NULL  
     DROP TRIGGER CHECK_INSERTED_GRADE ;
 GO
@@ -36,7 +35,7 @@ GO
  --SELECT * FROM Grades WHERE StudentId = 640 AND GradeDate = '2021/02/11' AND GradeValue = 5 AND SubjectId = 3
  GO
 
-/***************************************** TRIGGER #2 ********************************************/
+/***************************************************** TRIGGER #2 ********************************************************/
 -- EN: Trigger TEACHER_HIRE_DATE inserts current date when new teacher is employed (inserted).
 IF OBJECT_ID ('TEACHER_HIRE_DATE' , 'TR') IS NOT NULL  
     DROP TRIGGER TEACHER_HIRE_DATE ;
@@ -59,8 +58,8 @@ SELECT * FROM Teachers
 INSERT INTO UNIVERSITY..Teachers VALUES ('DontHave', 'Date', '','305.124.4567', NULL, 2670);
 SELECT * FROM Teachers WHERE Teachers.PhoneNumber = '305.124.4567'
 
-/***************************************** TRIGGER #3 ********************************************/
--- EN: Trigger ENTER_FINAL_GRADES inserts 'final grade' as AVG of all grades when new Academic Year starts.
+/***************************************************** TRIGGER #3 ********************************************************/
+-- EN: Trigger ENTER_FINAL_GRADES inserts 'final grade' as AVG of all grades when new academic year starts.
 IF OBJECT_ID ('ENTER_FINAL_GRADES' , 'TR') IS NOT NULL
     DROP TRIGGER ENTER_FINAL_GRADES ;
 GO
@@ -70,30 +69,30 @@ INSTEAD OF INSERT
 AS
 BEGIN
     DECLARE @StudentId INT
-	DECLARE Cursor_Student CURSOR FOR
-	SELECT StudentId FROM Students;
-	OPEN Cursor_Student
-		FETCH NEXT FROM Cursor_Student
-		INTO @StudentId
-		WHILE @@FETCH_STATUS = 0
-		BEGIN
-			DECLARE @SubjectId INT 
-			DECLARE Cursor_Subjects CURSOR FOR
-			SELECT SubjectId FROM Subjects;
-			OPEN Cursor_Subjects
-				FETCH NEXT FROM Cursor_Subjects
-				INTO @SubjectId
-				WHILE @@FETCH_STATUS = 0
-				BEGIN
-					IF EXISTS (SELECT StudentId FROM Grades WHERE @StudentId = StudentId AND @SubjectId = SubjectId)
-					    BEGIN
-						    DECLARE @FinalGrade INT,
-						    @AlbumId INT = (SELECT AlbumId FROM Albums WHERE StudentId = @StudentId),
-						    @AcademicYearId INT = (SELECT TOP 1 AcademicYearId FROM AcademicYear ORDER BY AcademicYearName DESC);
-						    SELECT @FinalGrade = ROUND(AVG(GradeValue),0) FROM Grades 
+    DECLARE Cursor_Student CURSOR FOR
+    SELECT StudentId FROM Students;
+    OPEN Cursor_Student
+    FETCH NEXT FROM Cursor_Student
+    INTO @StudentId
+    WHILE @@FETCH_STATUS = 0
+        BEGIN
+            DECLARE @SubjectId INT 
+            DECLARE Cursor_Subjects CURSOR FOR
+            SELECT SubjectId FROM Subjects;
+            OPEN Cursor_Subjects
+            FETCH NEXT FROM Cursor_Subjects
+            INTO @SubjectId
+            WHILE @@FETCH_STATUS = 0
+                BEGIN
+                    IF EXISTS (SELECT StudentId FROM Grades WHERE @StudentId = StudentId AND @SubjectId = SubjectId)
+                        BEGIN
+                            DECLARE @FinalGrade INT,
+                            @AlbumId INT = (SELECT AlbumId FROM Albums WHERE StudentId = @StudentId),
+                            @AcademicYearId INT = (SELECT TOP 1 AcademicYearId FROM AcademicYear ORDER BY AcademicYearName DESC);
+                            SELECT @FinalGrade = ROUND(AVG(GradeValue),0) FROM Grades 
                             WHERE @StudentId = StudentId AND @SubjectId = SubjectId
-						    INSERT INTO FinalGrades VALUES (@AlbumId, @FinalGrade, @SubjectId, @AcademicYearId);
-					    END
+                            INSERT INTO FinalGrades VALUES (@AlbumId, @FinalGrade, @SubjectId, @AcademicYearId);
+                        END
 					FETCH NEXT FROM Cursor_Subjects
 				    INTO @SubjectId
 				END
@@ -113,7 +112,7 @@ INSERT INTO AcademicYear VALUES('2021/10/15');
 --SELECT* FROM FinalGrades
 --SELECT* FROM AcademicYear
 
-/***************************************** TRIGGER #4 ********************************************/
+/***************************************************** TRIGGER #4 ********************************************************/
 -- EN: Trigger DELETE_STUDENT deletes student as well as all references to this student.
 SELECT* FROM Students WHERE StudentId = 600
 IF OBJECT_ID ('DELETE_STUDENT' , 'TR') IS NOT NULL
@@ -153,7 +152,7 @@ DELETE FROM Students WHERE StudentId = 600;
 --SELECT * FROM Students WHERE StudentId = 600
 SELECT * FROM Students INNER JOIN Timetables ON Students.StudentId = Timetables.StudentId WHERE Timetables.StudentId = 600
 
-/***************************************** TRIGGER #5 ********************************************/
+/***************************************************** TRIGGER #5 ********************************************************/
 -- EN:
 	--Wyzwalacz UPDATE_GRADE, który po ka¿dej modyfikacji w tabeli "grades"
 --wprowadza aktualn¹ dat¹ modyfikacji do pola "grade_date".
