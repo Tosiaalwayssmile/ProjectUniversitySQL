@@ -14,12 +14,11 @@ BEGIN
     DECLARE @AttendendSubjectId INT = (SELECT t.SubjectId FROM Students s INNER JOIN Timetables t
     ON s.StudentId = t.StudentId
     WHERE @StudentId = t.StudentId AND @InsertedSubjectId = t.SubjectId)
-
-	DECLARE @Note VARCHAR(30) = (SELECT Note FROM INSERTED),
-            @GradeValue INT = (SELECT GradeValue FROM INSERTED),
-            @GradeDate DATE = (SELECT GradeDate FROM INSERTED),
-            @StudentName VARCHAR(55) = (SELECT FirstName + ' ' + LastName FROM Students WHERE StudentId = @StudentId),
-            @SubjectName VARCHAR(30) = (SELECT SubjectName FROM Subjects WHERE SubjectId = @InsertedSubjectId)
+    DECLARE @Note VARCHAR(30) = (SELECT Note FROM INSERTED),
+        @GradeValue INT = (SELECT GradeValue FROM INSERTED),
+        @GradeDate DATE = (SELECT GradeDate FROM INSERTED),
+        @StudentName VARCHAR(55) = (SELECT FirstName + ' ' + LastName FROM Students WHERE StudentId = @StudentId),
+        @SubjectName VARCHAR(30) = (SELECT SubjectName FROM Subjects WHERE SubjectId = @InsertedSubjectId)
             
     IF(@InsertedSubjectId = @AttendendSubjectId)
     BEGIN
