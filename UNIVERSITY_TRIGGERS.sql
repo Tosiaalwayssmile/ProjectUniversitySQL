@@ -166,8 +166,8 @@ AS
 BEGIN
     DECLARE @GradeId INT = (SELECT GradeId FROM INSERTED)
     UPDATE Grades
-	SET GradeDate = GETDATE()
-	WHERE @GradeId = GradeId;
+    SET GradeDate = GETDATE()
+    WHERE @GradeId = GradeId;
 END
 GO
 UPDATE Grades SET GradeValue = 4 WHERE GradeId = 5;
