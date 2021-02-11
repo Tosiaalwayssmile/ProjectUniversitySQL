@@ -23,10 +23,10 @@ BEGIN
     IF(@InsertedSubjectId = @AttendendSubjectId)
     BEGIN
         INSERT INTO UNIVERSITY..Grades VALUES (@GradeValue, @GradeDate, @InsertedSubjectId, @StudentId, @Note)
-	    PRINT 'Student ' + @StudentName + ' got a ' + CAST(@GradeValue AS VARCHAR) + ' in ' + @SubjectName + '.';
+        PRINT 'Student ' + @StudentName + ' got a ' + CAST(@GradeValue AS VARCHAR) + ' in ' + @SubjectName + '.';
     END
     ELSE
-	PRINT 'Student ' + @StudentName + ' does not attend course: ' + @SubjectName + '.'
+    PRINT 'Student ' + @StudentName + ' does not attend course: ' + @SubjectName + '.'
 END
 GO
 
