@@ -127,24 +127,24 @@ BEGIN
     @NumberOfSubjects INT,
     @LastName VARCHAR(25) = (SELECT LastName FROM DELETED)
     SET @NumberOfSubjects = (SELECT COUNT(SubjectId) 
-	FROM Timetables	WHERE StudentId = @StudentId)
-
-	DELETE FROM Timetables
-	WHERE StudentId = @StudentId
-
-	DELETE FROM FinalGrades
-	WHERE AlbumId = (SELECT AlbumId FROM albums WHERE StudentId = @StudentId)
-	
-	DELETE FROM Grades
-	WHERE StudentId = @StudentId
-
-	DELETE FROM Albums
-	WHERE StudentId = @StudentId
-
-	DELETE FROM Students 
-	WHERE StudentId = @StudentId
-
-	PRINT 'Student ' + @FirstName + ' ' + @LastName + ' was deleted from ' + cast(@NumberOfSubjects as VARCHAR) + ' subjects and then deleted from student list.'
+    FROM Timetables	WHERE StudentId = @StudentId)
+    
+    DELETE FROM Timetables
+    WHERE StudentId = @StudentId
+    
+    DELETE FROM FinalGrades
+    WHERE AlbumId = (SELECT AlbumId FROM albums WHERE StudentId = @StudentId)
+    
+    DELETE FROM Grades
+    WHERE StudentId = @StudentId
+    
+    DELETE FROM Albums
+    WHERE StudentId = @StudentId
+    
+    DELETE FROM Students 
+    WHERE StudentId = @StudentId
+    
+    PRINT 'Student ' + @FirstName + ' ' + @LastName + ' was deleted from ' + cast(@NumberOfSubjects as VARCHAR) + ' subjects and then deleted from student list.'
 END
 GO
 DELETE FROM Students WHERE StudentId = 600;
