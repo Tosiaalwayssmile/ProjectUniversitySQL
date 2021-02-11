@@ -55,7 +55,7 @@ IF (SELECT Teachers.HireDate FROM Teachers WHERE Teachers.TeacherId = @TeacherId
 GO
 SELECT * FROM Teachers
 /********* Columns: TeacherId(identity), FirstName, LastName, Email, PhoneNumber, HireDate, Salary *********/
-INSERT INTO UNIVERSITY..Teachers VALUES ('DontHave', 'Date', '','305.124.4567', NULL, 2670);
+INSERT INTO UNIVERSITY..Teachers VALUES ('DontHave', 'HireDate', 'MyEmail@gmail.com','305.124.4567', NULL, 2670);
 SELECT * FROM Teachers WHERE Teachers.PhoneNumber = '305.124.4567'
 
 /***************************************************** TRIGGER #3 ********************************************************/
@@ -107,14 +107,14 @@ BEGIN
     INSERT INTO AcademicYear VALUES(@AcademicYearName);
 END
 GO
---SELECT* FROM FinalGrades
+--SELECT * FROM FinalGrades
 INSERT INTO AcademicYear VALUES('2021/10/15');
---SELECT* FROM FinalGrades
---SELECT* FROM AcademicYear
+--SELECT * FROM FinalGrades
+--SELECT * FROM AcademicYear
 
 /***************************************************** TRIGGER #4 ********************************************************/
 -- EN: Trigger DELETE_STUDENT deletes student as well as all references to this student.
-SELECT* FROM Students WHERE StudentId = 600
+SELECT * FROM Students WHERE StudentId = 600
 IF OBJECT_ID ('DELETE_STUDENT' , 'TR') IS NOT NULL
     DROP TRIGGER DELETE_STUDENT;
 GO
@@ -125,6 +125,7 @@ AS
 BEGIN
     DECLARE @StudentId INT = (SELECT StudentId FROM DELETED),
     @NumberOfSubjects INT,
+    @FirstName VARCHAR(25) = (SELECT FirstName FROM DELETED),
     @LastName VARCHAR(25) = (SELECT LastName FROM DELETED)
     SET @NumberOfSubjects = (SELECT COUNT(SubjectId) 
     FROM Timetables WHERE StudentId = @StudentId)
@@ -152,27 +153,22 @@ DELETE FROM Students WHERE StudentId = 600;
 SELECT * FROM Students INNER JOIN Timetables ON Students.StudentId = Timetables.StudentId WHERE Timetables.StudentId = 600
 
 /***************************************************** TRIGGER #5 ********************************************************/
--- EN:
-	--Wyzwalacz UPDATE_GRADE, który po ka¿dej modyfikacji w tabeli "grades"
---wprowadza aktualn¹ dat¹ modyfikacji do pola "grade_date".
- SELECT* FROM grades WHERE grade_id = 5
- IF OBJECT_ID ('UPDATE_GRADE' , 'TR') IS NOT NULL
- DROP TRIGGER UPDATE_GRADE ;
+-- EN: Trigger UPDATE_GRADE inserts current date to 'GradeDate' when Grade Value is updated.
+--SELECT * FROM Grades WHERE GradeId = 5
+
+IF OBJECT_ID ('UPDATE_GRADE' , 'TR') IS NOT NULL
+    DROP TRIGGER UPDATE_GRADE ;
 GO
 CREATE TRIGGER UPDATE_GRADE
-ON grades
+ON Grades
 AFTER UPDATE
 AS
 BEGIN
-	DECLARE @grade_id INT = (SELECT grade_id FROM INSERTED)
-
-	UPDATE grades
-	SET grade_date = GETDATE()
-	WHERE @grade_id = grade_id;
+    DECLARE @GradeId INT = (SELECT GradeId FROM INSERTED)
+    UPDATE Grades
+	SET GradeDate = GETDATE()
+	WHERE @GradeId = GradeId;
 END
 GO
-	UPDATE grades
-	SET grade_name = 1
-	WHERE grade_id = 5;
-
-	SELECT* FROM grades WHERE grade_id = 5
+UPDATE Grades SET GradeValue = 4 WHERE GradeId = 5;
+--SELECT * FROM grades WHERE GradeId = 5
