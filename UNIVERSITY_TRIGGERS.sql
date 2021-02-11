@@ -16,10 +16,10 @@ BEGIN
     WHERE @StudentId = t.StudentId AND @InsertedSubjectId = t.SubjectId)
 
 	DECLARE @Note VARCHAR(30) = (SELECT Note FROM INSERTED),
-			@GradeValue INT = (SELECT GradeValue FROM INSERTED),
-		    @GradeDate DATE = (SELECT GradeDate FROM INSERTED),
-			@StudentName VARCHAR(55) = (SELECT FirstName + ' ' + LastName FROM Students WHERE StudentId = @StudentId),
-			@SubjectName VARCHAR(30) = (SELECT SubjectName FROM Subjects WHERE SubjectId = @InsertedSubjectId)
+            @GradeValue INT = (SELECT GradeValue FROM INSERTED),
+            @GradeDate DATE = (SELECT GradeDate FROM INSERTED),
+            @StudentName VARCHAR(55) = (SELECT FirstName + ' ' + LastName FROM Students WHERE StudentId = @StudentId),
+            @SubjectName VARCHAR(30) = (SELECT SubjectName FROM Subjects WHERE SubjectId = @InsertedSubjectId)
 
 	IF(@InsertedSubjectId = @AttendendSubjectId)
     BEGIN
@@ -42,7 +42,7 @@ GO
 --IF OBJECT_ID (TEACHER_HIRE_DATE , 'TR') IS NOT NULL  
 -- DROP TRIGGER TEACHER_HIRE_DATE ;
 GO
-create TRIGGER TEACHER_HIRE_DATE
+CREATE TRIGGER TEACHER_HIRE_DATE
 on teachers
 after insert
 as
