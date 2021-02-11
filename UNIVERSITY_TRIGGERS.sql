@@ -127,7 +127,7 @@ BEGIN
     @NumberOfSubjects INT,
     @LastName VARCHAR(25) = (SELECT LastName FROM DELETED)
     SET @NumberOfSubjects = (SELECT COUNT(SubjectId) 
-    FROM Timetables	WHERE StudentId = @StudentId)
+    FROM Timetables WHERE StudentId = @StudentId)
     
     DELETE FROM Timetables
     WHERE StudentId = @StudentId
