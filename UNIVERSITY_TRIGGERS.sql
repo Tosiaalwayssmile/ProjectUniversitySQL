@@ -9,8 +9,8 @@ CREATE TRIGGER CHECK_INSERTED_GRADE
 ON Grades INSTEAD OF INSERT
 AS
 BEGIN
-	DECLARE @StudentId INT = (SELECT StudentId FROM INSERTED);
-	DECLARE @InsertedSubjectId INT = (SELECT SubjectId FROM INSERTED);
+    DECLARE @StudentId INT = (SELECT StudentId FROM INSERTED);
+    DECLARE @InsertedSubjectId INT = (SELECT SubjectId FROM INSERTED);
     DECLARE @AttendendSubjectId INT = (SELECT t.SubjectId FROM Students s INNER JOIN Timetables t
     ON s.StudentId = t.StudentId
     WHERE @StudentId = t.StudentId AND @InsertedSubjectId = t.SubjectId)
