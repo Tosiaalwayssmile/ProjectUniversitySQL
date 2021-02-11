@@ -93,18 +93,18 @@ BEGIN
                             WHERE @StudentId = StudentId AND @SubjectId = SubjectId
                             INSERT INTO FinalGrades VALUES (@AlbumId, @FinalGrade, @SubjectId, @AcademicYearId);
                         END
-					FETCH NEXT FROM Cursor_Subjects
-				    INTO @SubjectId
-				END
-			CLOSE Cursor_Subjects;
-			DEALLOCATE Cursor_Subjects;
-			FETCH NEXT FROM Cursor_Student
-			INTO @StudentId
-		END
-	CLOSE Cursor_Student;
-	DEALLOCATE Cursor_Student;
-	DECLARE @AcademicYearName DATE = (SELECT AcademicYearName FROM INSERTED);
-	INSERT INTO AcademicYear VALUES(@AcademicYearName);
+                    FETCH NEXT FROM Cursor_Subjects
+                    INTO @SubjectId
+            END
+            CLOSE Cursor_Subjects;
+            DEALLOCATE Cursor_Subjects;
+            FETCH NEXT FROM Cursor_Student
+            INTO @StudentId
+        END
+    CLOSE Cursor_Student;
+    DEALLOCATE Cursor_Student;
+    DECLARE @AcademicYearName DATE = (SELECT AcademicYearName FROM INSERTED);
+    INSERT INTO AcademicYear VALUES(@AcademicYearName);
 END
 GO
 --SELECT* FROM FinalGrades
