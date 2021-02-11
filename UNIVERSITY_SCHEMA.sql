@@ -47,8 +47,8 @@ CREATE TABLE UNIVERSITY..Subjects(
     SubjectId    INT IDENTITY(1,1) 
     CONSTRAINT PK_SubjectId PRIMARY KEY (SubjectId), 
     SubjectName  VARCHAR(30) NOT NULL,
-    MainTeacherId	INT	
-    CONSTRAINT FK_Subjects_MainTeacherId FOREIGN KEY (MainTeacherId) REFERENCES Teachers (TeacherId)
+    MaINTeacherId	INT	
+    CONSTRAINT FK_Subjects_MaINTeacherId FOREIGN KEY (MaINTeacherId) REFERENCES Teachers (TeacherId)
 );
 GO
 
@@ -100,7 +100,7 @@ GO
 CREATE TABLE UNIVERSITY..AcademicYear(
     AcademicYearId	INT IDENTITY(1,1)
     CONSTRAINT PK_AcademicYearId PRIMARY KEY (AcademicYearId),
-    AcademicYearName	Date NOT NULL
+    AcademicYearName    DATE NOT NULL
 );
 GO
 
@@ -118,7 +118,7 @@ CREATE TABLE UNIVERSITY..GroupTypes(
 GO
 
 CREATE TABLE UNIVERSITY..Grades (
-    GradeId int NOT NULL IDENTITY(1,1)
+    GradeId INT NOT NULL IDENTITY(1,1)
     CONSTRAINT PK_GradeId PRIMARY key (GradeId),
     GradeValue  FLOAT NOT NULL,
     GradeDate DATE,

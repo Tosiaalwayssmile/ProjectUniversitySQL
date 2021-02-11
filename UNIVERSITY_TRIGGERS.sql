@@ -32,155 +32,129 @@ GO
 
  INSERT INTO UNIVERSITY..Grades VALUES (2, '2018/02/01', 1, 640, 'Test'); -- should not assign grade
  INSERT INTO UNIVERSITY..Grades VALUES (5, '2018/02/01', 1, 660, 'Test'); -- should not assign grade
- INSERT INTO UNIVERSITY..Grades VALUES (5, '2021/02/11', 3, 640, 'Project');  -- should  assign grade
+ INSERT INTO UNIVERSITY..Grades VALUES (5, '2021/02/11', 3, 640, 'Project');  -- should assign grade
  --SELECT * FROM Grades WHERE StudentId = 640 AND GradeDate = '2021/02/11' AND GradeValue = 5 AND SubjectId = 3
  GO
 
- -----------------------TRIGGER 2-----------------------------------
--- Wyzwalacz TEACHER_HIRE_DATE, który po wstawieniu nauczyciela bez daty zatrudnienia, wstawia aktualn¹.
---IF OBJECT_ID (TEACHER_HIRE_DATE , 'TR') IS NOT NULL  
--- DROP TRIGGER TEACHER_HIRE_DATE ;
+/***************************************** TRIGGER #2 ********************************************/
+-- EN: Trigger TEACHER_HIRE_DATE inserts current date when new teacher is employed (inserted).
+IF OBJECT_ID ('TEACHER_HIRE_DATE' , 'TR') IS NOT NULL  
+    DROP TRIGGER TEACHER_HIRE_DATE ;
 GO
 CREATE TRIGGER TEACHER_HIRE_DATE
-on teachers
-after insert
-as
-DECLARE @teacher_id INT
-set @teacher_id = (SELECT teacher_id FROM INSERTED)
-IF (SELECT teachers.hire_date FROM teachers WHERE teachers.teacher_id =
-@teacher_id) is null
-BEGIN
-update teachers
-set hire_date = GETDATE() 
-WHERE teachers.teacher_id = @teacher_id
-END
+ON Teachers
+AFTER INSERT
+AS
+DECLARE @TeacherId INT
+SET @TeacherId = (SELECT TeacherId FROM INSERTED)
+IF (SELECT Teachers.HireDate FROM Teachers WHERE Teachers.TeacherId = @TeacherId) IS NULL
+    BEGIN
+        UPDATE Teachers
+        SET HireDate = GETDATE() 
+        WHERE Teachers.TeacherId = @TeacherId
+    END
 GO
-SELECT * FROM teachers
-INSERT INTO UNIVERSITY..teachers VALUES ( 2010, 'Niemam', 'Dgaty', '','515.124.4567', NULL, 2670);
-SELECT * FROM teachers WHERE teachers.teacher_id = 2010
+SELECT * FROM Teachers
+/********* Columns: TeacherId(identity), FirstName, LastName, Email, PhoneNumber, HireDate, Salary *********/
+INSERT INTO UNIVERSITY..Teachers VALUES ('DontHave', 'Date', '','305.124.4567', NULL, 2670);
+SELECT * FROM Teachers WHERE Teachers.PhoneNumber = '305.124.4567'
 
------------------------TRIGGER 3-----------------------------------
-
-
------------------------TRIGGER 3-----------------------------------
---Wyzwalacz ENTER_FINAL_GRADES, który po dodaniu do tabeli academic_year noweGO roku akademickieGO 
---wprowadza 'final grade' jako zaokr¹glon¹ œredni¹ ocen cz¹stkowych.
-
- IF OBJECT_ID ('ENTER_FINAL_GRADES' , 'TR') IS NOT NULL
- DROP TRIGGER ENTER_FINAL_GRADES ;
+/***************************************** TRIGGER #3 ********************************************/
+-- EN: Trigger ENTER_FINAL_GRADES inserts 'final grade' as AVG of all grades when new Academic Year starts.
+IF OBJECT_ID ('ENTER_FINAL_GRADES' , 'TR') IS NOT NULL
+    DROP TRIGGER ENTER_FINAL_GRADES ;
 GO
 CREATE TRIGGER ENTER_FINAL_GRADES
-ON academic_year
+ON AcademicYear
 INSTEAD OF INSERT
 AS
 BEGIN
-	--start kursor_studenci
-	DECLARE  @student_id INT
-	DECLARE kursor_studenci CURSOR FOR
-	SELECT student_id FROM students;
-	OPEN kursor_studenci
-		FETCH NEXT FROM kursor_studenci
-		INTO @student_id
+    DECLARE @StudentId INT
+	DECLARE Cursor_Student CURSOR FOR
+	SELECT StudentId FROM Students;
+	OPEN Cursor_Student
+		FETCH NEXT FROM Cursor_Student
+		INTO @StudentId
 		WHILE @@FETCH_STATUS = 0
 		BEGIN
-			--start kursor_przedmioty
-			DECLARE @subject_id INT 
-			DECLARE kursor_przedmioty CURSOR FOR
-			SELECT subject_id FROM subjects;
-			OPEN kursor_przedmioty
-				FETCH NEXT FROM kursor_przedmioty
-				INTO @subject_id
+			DECLARE @SubjectId INT 
+			DECLARE Cursor_Subjects CURSOR FOR
+			SELECT SubjectId FROM Subjects;
+			OPEN Cursor_Subjects
+				FETCH NEXT FROM Cursor_Subjects
+				INTO @SubjectId
 				WHILE @@FETCH_STATUS = 0
 				BEGIN
-					IF EXISTS (SELECT student_id FROM grades WHERE @student_id = student_id AND @subject_id = subject_id)
-					BEGIN
-						DECLARE @final_grade INT,
-						@album_id INT = (SELECT album_id FROM albums WHERE student_id = @student_id),
-						@academic_year INT = (SELECT TOP 1 academic_year_id FROM academic_year ORDER BY academic_year_id DESC);
-
-						SELECT @final_grade = ROUND(AVG(grade_name),0) FROM grades 
-							WHERE @student_id = student_id AND @subject_id = subject_id
-					
-						INSERT INTO final_grades VALUES (@album_id, @final_grade, @subject_id,@academic_year);
-					END
-
-					FETCH NEXT FROM kursor_przedmioty
-					INTO @subject_id
+					IF EXISTS (SELECT StudentId FROM Grades WHERE @StudentId = StudentId AND @SubjectId = SubjectId)
+					    BEGIN
+						    DECLARE @FinalGrade INT,
+						    @AlbumId INT = (SELECT AlbumId FROM Albums WHERE StudentId = @StudentId),
+						    @AcademicYearId INT = (SELECT TOP 1 AcademicYearId FROM AcademicYear ORDER BY AcademicYearName DESC);
+						    SELECT @FinalGrade = ROUND(AVG(GradeValue),0) FROM Grades 
+                            WHERE @StudentId = StudentId AND @SubjectId = SubjectId
+						    INSERT INTO FinalGrades VALUES (@AlbumId, @FinalGrade, @SubjectId, @AcademicYearId);
+					    END
+					FETCH NEXT FROM Cursor_Subjects
+				    INTO @SubjectId
 				END
-
-			CLOSE kursor_przedmioty;
-			DEALLOCATE kursor_przedmioty;
-			--koniec kursor_przedmioty
-
-			FETCH NEXT FROM kursor_studenci
-			INTO @student_id
+			CLOSE Cursor_Subjects;
+			DEALLOCATE Cursor_Subjects;
+			FETCH NEXT FROM Cursor_Student
+			INTO @StudentId
 		END
-
-	CLOSE kursor_studenci;
-	DEALLOCATE kursor_studenci;
-	--koniec kursor_studenci
-
-	DECLARE @academic_year_id INT = (SELECT academic_year_id FROM INSERTED),
-			@academic_year_name DATETIME = (SELECT academic_year_name FROM INSERTED);
-	INSERT INTO academic_year VALUES(@academic_year_id, @academic_year_name);
+	CLOSE Cursor_Student;
+	DEALLOCATE Cursor_Student;
+	DECLARE @AcademicYearName DATE = (SELECT AcademicYearName FROM INSERTED);
+	INSERT INTO AcademicYear VALUES(@AcademicYearName);
 END
 GO
-	INSERT INTO academic_year VALUES(2, '2018/10/15');
+--SELECT* FROM FinalGrades
+INSERT INTO AcademicYear VALUES('2021/10/15');
+--SELECT* FROM FinalGrades
+--SELECT* FROM AcademicYear
 
-	SELECT* FROM final_grades
-	SELECT* FROM academic_year
-
-
-
-
-
-
-
-
-	--Wyzwalacz DELETE_STUDENT, który przy próbie usuniêcia studenta w pierwszej kolejnoœci
---wypisuje GO ze wszystkich przedmiotów na które jest zapisany, a nastêpnie trwale usuwa GO z listy studentów.
- SELECT* FROM students WHERE student_id = 600
- IF OBJECT_ID ('DELETE_STUDENT' , 'TR') IS NOT NULL
- DROP TRIGGER DELETE_STUDENT ;
+/***************************************** TRIGGER #4 ********************************************/
+-- EN: Trigger DELETE_STUDENT deletes student as well as all references to this student.
+SELECT* FROM Students WHERE StudentId = 600
+IF OBJECT_ID ('DELETE_STUDENT' , 'TR') IS NOT NULL
+    DROP TRIGGER DELETE_STUDENT ;
 GO
 CREATE TRIGGER DELETE_STUDENT
-ON students
+ON Students
 INSTEAD OF DELETE
 AS
 BEGIN
+	DECLARE @StudentId INT = (SELECT StudentId FROM DELETED),
+			@NumberOfSubjects INT,
+			@FirstName VARCHAR(20) = (SELECT FirstName FROM DELETED),
+			@LastName VARCHAR(25) = (SELECT LastName FROM DELETED)
+	SET @NumberOfSubjects = (SELECT COUNT(SubjectId) 
+	FROM Timetables	WHERE StudentId = @StudentId)
 
-	DECLARE @student_id INT = (SELECT student_id FROM deleted),
-			@ilosc INT,
-			@first_name VARCHAR(20) = (SELECT first_name FROM deleted),
-			@last_name VARCHAR(25) = (SELECT last_name FROM deleted)
+	DELETE FROM Timetables
+	WHERE StudentId = @StudentId
+
+	DELETE FROM FinalGrades
+	WHERE AlbumId = (SELECT AlbumId FROM albums WHERE StudentId = @StudentId)
 	
-	SET @ilosc = (SELECT count(subject_id) 
-	FROM timetables	WHERE student_id = @student_id)
+	DELETE FROM Grades
+	WHERE StudentId = @StudentId
 
-	DELETE FROM timetables
-	WHERE student_id = @student_id
+	DELETE FROM Albums
+	WHERE StudentId = @StudentId
 
-	DELETE FROM final_grades
-	WHERE album_id = (SELECT album_id FROM albums WHERE student_id = @student_id)
-	
-	DELETE FROM grades
-	WHERE student_id = @student_id
+	DELETE FROM Students 
+	WHERE StudentId = @StudentId
 
-	DELETE FROM albums
-	WHERE student_id = @student_id
-
-	DELETE FROM students 
-	WHERE student_id = @student_id
-
-	PRINT 'Studenta ' + @first_name + ' ' + @last_name + ' wypisano z ' + cast(@ilosc as VARCHAR) + ' przedmiotów, a nastepnie usuniêto z listy studentów.'
-
+	PRINT 'Student ' + @FirstName + ' ' + @LastName + ' was deleted from ' + cast(@NumberOfSubjects as VARCHAR) + ' subjects and then deleted from student list.'
 END
 GO
-	DELETE FROM students
-	WHERE student_id = 600;
+DELETE FROM Students WHERE StudentId = 600;
+--SELECT * FROM Students WHERE StudentId = 600
+SELECT * FROM Students INNER JOIN Timetables ON Students.StudentId = Timetables.StudentId WHERE Timetables.StudentId = 600
 
-	SELECT* FROM students WHERE student_id = 600
-
+/***************************************** TRIGGER #5 ********************************************/
+-- EN:
 	--Wyzwalacz UPDATE_GRADE, który po ka¿dej modyfikacji w tabeli "grades"
 --wprowadza aktualn¹ dat¹ modyfikacji do pola "grade_date".
  SELECT* FROM grades WHERE grade_id = 5
