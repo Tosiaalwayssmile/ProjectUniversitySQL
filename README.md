@@ -10,5 +10,5 @@ SQL Server project with **triggers**, stored **procedures** and **functions** an
 5) [**UNIVERSITY_QUERIES.sql**](https://github.com/Tosiaalwayssmile/ProjectUniversitySQL/blob/main/UNIVERSITY_QUERIES.sql) is being updated.
 6) In [**UNIVERSITY_TRIGGERS.sql**](https://github.com/Tosiaalwayssmile/ProjectUniversitySQL/blob/main/UNIVERSITY_TRIGGERS.sql) there are 5 **Triggers**. E.g. trigger DELETE_STUDENT acts instead of delete so when student is deleted it deletes student as well as all references to this student.
 
-7) **DatabaseModel.png** shows a database model from the **SQL diagram** tool.
-8) **Sprawozdanie.pdf** is a project report for this project. It presents **results for** all the **queries**, **functions**, **procedures** and **triggers**. It also includes SQL diagram in better quality. 
+7) [**DatabaseModel.png**](https://github.com/Tosiaalwayssmile/ProjectUniversitySQL/blob/main/DatabaseModel.png) shows a database model from the **SQL diagram** tool.
+8) [**Sprawozdanie.pdf**](https://github.com/Tosiaalwayssmile/ProjectUniversitySQL/blob/main/Sprawozdanie.pdf) is a project report for this project. It presents **results for** all the **queries**, **functions**, **procedures** and **triggers**. It also includes SQL diagram in better quality. 
