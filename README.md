@@ -1,4 +1,4 @@
-# ProjectUniversitySQL
+# Project 'University' - SQL
 SQL Server project with **triggers**, stored **procedures** and **functions** and **own database project**. Project University simulates database for real university where students belong to different groups, have timetables with courses that they enrolled in and classrooms where the lessons take place. Also each subject has assinged main teacher.
 
 **What can you find here:**
